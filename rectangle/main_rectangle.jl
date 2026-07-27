@@ -25,7 +25,7 @@ M = assemble_matrix(a2, Ug, V0)
 
 λ, ϕ = eigs(K, M; nev=4, which=:SM)
 
-k = sqrt(λ[2])
+k = sqrt(5.0)
 F(x) = -x[1]*x[2]
 
 eig_func1 = FEFunction(Ug, ϕ[:, 1])
@@ -45,23 +45,25 @@ b = assemble_vector(l, V0)
 
 u_special_vec = zeros(length(b))
 u_special_vec, history = gmres!(
-    u_special_vec, A, b; restart=50, maxiter=25000, reltol=1e-6, log=true
+    u_special_vec, A, b; restart=50, maxiter=25000, reltol=1e-10, log=true
 )
 history
 
 u_special = FEFunction(Ug, u_special_vec)
 
-# fig, ax, plt = plot(Ω, u_special)
-# Colorbar(fig[1, 2], plt)
-# fig
+fig, ax, plt = plot(Ω, u_special)
+Colorbar(fig[1, 2], plt)
+fig
 
-a_1 = -c_1/10
-a_2 = -c_2/10
+a_1 = c_1/10
+a_2 = c_2/10
 
 u_final_vec = u_special_vec + a_1*ϕ[:,2] + a_2*ϕ[:,3]
-u_special = FEFunction(Ug,u_special_vec)
+u_final = FEFunction(Ug,u_final_vec)
 
-fig, ax, plt = plot(Ω, u_special)
+fig, ax, plt = plot(Ω, u_final)
 Colorbar(fig[1,2], plt)
 fig
+
+
 

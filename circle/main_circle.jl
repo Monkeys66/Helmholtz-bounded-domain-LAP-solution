@@ -26,7 +26,7 @@ M = assemble_matrix(a2,Ug,V0)
 λ, ϕ = eigs(K,M, nev=6; which=:SM)
 
 k = sqrt(λ[2])
-F(x) = k*exp(x[1]^2+x[2]^2) 
+F(x) = -k*exp(x[1]^2+x[2]^2) 
 
 eig_func1 = FEFunction(Ug,ϕ[:,1])
 eig_func2 = FEFunction(Ug,ϕ[:,2])
