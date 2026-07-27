@@ -16,7 +16,7 @@ Each `main_*.jl` script follows the same pipeline.
 
    $$K_{ij} = \int_\Omega \nabla\varphi_i \cdot \nabla\varphi_j \, dx, \qquad M_{ij} = \int_\Omega \varphi_i \varphi_j \, dx.$$
 
-2. **Eigenpairs.** Solve the generalized eigenproblem $K\varphi = \lambda M\varphi$ with `Arpack.eigs` (`which=:SM`) for the lowest modes, and set $k = \sqrt{\lambda_j}$ for the resonance under study. Using the *discrete* eigenvalue makes $A = K - k^2 M$ exactly singular in floating point, so that $\ker(A)$ is clean and $\operatorname{range}(A) = \ker(A)^\perp$ holds to machine precision.
+2. **Eigenpairs.** Solve the generalized eigenproblem $K\varphi = \lambda M\varphi$ with `Arpack.eigs` (`which=:SM`) for the lowest modes, and set $k = \sqrt{\lambda_j}$ for the resonance under study. Using the *discrete* eigenvalue makes $A = K - k^2 M$ exactly singular in floating point, so that $\ker(A)$ is clean and $\text{range}(A) = \ker(A)^\perp$ holds to machine precision.
 
 3. **Orthogonalization.** Project the source onto the orthogonal complement of the eigenspace,
 
