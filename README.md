@@ -24,7 +24,7 @@ Each `main_*.jl` script follows the same pipeline.
 
    so that the discrete system becomes compatible. The sum runs over the full (possibly degenerate) eigenspace associated with $k^2$.
 
-4. **Particular solution.** Solve $A u = b$ with GMRES started from $u_0 = 0$. The iterates stay in the Krylov space $\mathcal{K}_m(A, b) \subseteq \operatorname{range}(A)$, so the result is the minimal-norm particular solution $u_{\text{special}}$ lying in the range of the operator.
+4. **Particular solution.** Solve $A u = b$ with GMRES started from $u_0 = 0$. 
 
 5. **LAP correction.** Recover the kernel coefficients from the constraint derived in the singular perturbation analysis,
 
