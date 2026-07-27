@@ -56,9 +56,9 @@ history
 
 u_special = FEFunction(Ug, u_special_vec)
 
-# fig, ax, plt = plot(Ω, u_special)
-# Colorbar(fig[1, 2], plt)
-# fig
+fig, ax, plt = plot(Ω, u_special)
+Colorbar(fig[1, 2], plt)
+fig
 
 a_1 = -c_1 / (2*k^2)
 u_final_vec = u_special_vec+a_1*ϕ[:, 1]

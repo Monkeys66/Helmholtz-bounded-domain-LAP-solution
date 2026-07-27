@@ -9,25 +9,25 @@ using Printf
 model = GmshDiscreteModel(joinpath(@__DIR__, "geo-circle.msh"))
 
 order = 1
-reffe = ReferenceFE(lagrangian,Float64,order)
-V0 = TestFESpace(model,reffe;conformity=:H1,dirichlet_tags="boundary")
+reffe = ReferenceFE(lagrangian, Float64, order)
+V0 = TestFESpace(model, reffe; conformity=:H1, dirichlet_tags="boundary")
 
 g(x) = 0.0
-Ug = TrialFESpace(V0,g)
+Ug = TrialFESpace(V0, g)
 
 degree = 2
 Ω = Triangulation(model)
-dΩ = Measure(Ω,degree)
+dΩ = Measure(Ω, degree)
 
-a1(u,v) = ∫( ∇(u)⋅∇(v) )*dΩ
-a2(u,v) = ∫( u*v )*dΩ
-K = assemble_matrix(a1,Ug,V0)
-M = assemble_matrix(a2,Ug,V0)
+a1(u, v) = ∫(∇(u)⋅∇(v))*dΩ
+a2(u, v) = ∫(u*v)*dΩ
+K = assemble_matrix(a1, Ug, V0)
+M = assemble_matrix(a2, Ug, V0)
 
-λ, ϕ = eigs(K,M, nev=6; which=:SM)
+λ, ϕ = eigs(K, M; nev=6, which=:SM)
 
 k = sqrt(λ[2])
-F(x) = -k*exp(x[1]^2+x[2]^2) 
+F(x) = -k*exp(x[1]^2+x[2]^2)
 
 eig_funcs = [FEFunction(Ug, ϕ[:, i]) for i in 1:3]
 
@@ -45,34 +45,29 @@ eig_funcs = [FEFunction(Ug, ϕ[:, i]) for i in 1:3]
 c_1 = sum(∫(F*eig_funcs[2])*dΩ)
 c_2 = sum(∫(F*eig_funcs[3])*dΩ)
 
-A = K - k^2*M 
-l(v) = ∫(F*v)dΩ - c_1*∫(eig_funcs[2]*v)dΩ - c_2*∫(eig_funcs[3]*v)dΩ 
-b = assemble_vector(l,V0)
+A = K - k^2*M
+l(v) = ∫(F*v)dΩ - c_1*∫(eig_funcs[2]*v)dΩ - c_2*∫(eig_funcs[3]*v)dΩ
+b = assemble_vector(l, V0)
 
 u_special_vec = zeros(length(b))
-u_special_vec, history = gmres!(u_special_vec, A, b; restart=50, maxiter=25000, reltol=1e-6, log=true)
+u_special_vec, history = gmres!(
+    u_special_vec, A, b; restart=50, maxiter=25000, reltol=1e-6, log=true
+)
 history
 
-u_special = FEFunction(Ug,u_special_vec)
+u_special = FEFunction(Ug, u_special_vec)
 
 fig, ax, plt = plot(Ω, u_special)
-Colorbar(fig[1,2], plt)
+Colorbar(fig[1, 2], plt)
 fig
 
-a_1 = -dot(u_special_vec, M*ϕ[:,2])
-a_2 = -dot(u_special_vec, M*ϕ[:,3]) 
+a_1 = -dot(u_special_vec, M*ϕ[:, 2])
+a_2 = -dot(u_special_vec, M*ϕ[:, 3])
 
-u_final_vec = u_special_vec + a_1*ϕ[:,2] + a_2*ϕ[:,3]
-u_fianl = FEFunction(Ug,u_final_vec)
+u_final_vec = u_special_vec + a_1*ϕ[:, 2] + a_2*ϕ[:, 3]
+u_final = FEFunction(Ug, u_final_vec)
 
 fig, ax, plt = plot(Ω, u_final)
-Colorbar(fig[1,2], plt)
+Colorbar(fig[1, 2], plt)
 fig
 
-
-
-
-
-
-
- 
