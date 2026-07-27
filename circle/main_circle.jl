@@ -4,6 +4,7 @@ using LinearAlgebra
 using GridapMakie, CairoMakie
 using Arpack
 using IterativeSolvers
+using Printf
 
 model = GmshDiscreteModel(joinpath(@__DIR__, "geo-circle.msh"))
 
@@ -28,19 +29,24 @@ M = assemble_matrix(a2,Ug,V0)
 k = sqrt(λ[2])
 F(x) = -k*exp(x[1]^2+x[2]^2) 
 
-eig_func1 = FEFunction(Ug,ϕ[:,1])
-eig_func2 = FEFunction(Ug,ϕ[:,2])
-eig_func3 = FEFunction(Ug,ϕ[:,3])
+eig_funcs = [FEFunction(Ug, ϕ[:, i]) for i in 1:3]
 
-# fig, ax, plt = plot(Ω, eig_func3)
-# Colorbar(fig[1,2], plt)
-# fig
+# fig = Figure(size = (1650, 480), fontsize = 18)
+# for i in 1:3
+#     ax = Axis(fig[1, 2i-1],
+#               title = @sprintf("Mode %d\nλ_%d = %.4f", i, i, λ[i]),
+#               xlabel = "x", ylabel = i == 1 ? "y" : "",
+#               aspect = DataAspect())
+#     plt = plot!(ax, Ω, eig_funcs[i], colormap = :RdBu)
+#     Colorbar(fig[1, 2i], plt, width = 12)
+# end
+# save(joinpath(@__DIR__, "eigenfunctions.png"), fig) 
 
-c_1 = sum(∫(F*eig_func2)*dΩ)
-c_2 = sum(∫(F*eig_func3)*dΩ)
+c_1 = sum(∫(F*eig_funcs[2])*dΩ)
+c_2 = sum(∫(F*eig_funcs[3])*dΩ)
 
 A = K - k^2*M 
-l(v) = ∫(F*v)dΩ - c_1*∫(eig_func2*v)dΩ - c_2*∫(eig_func3*v)dΩ 
+l(v) = ∫(F*v)dΩ - c_1*∫(eig_funcs[2]*v)dΩ - c_2*∫(eig_funcs[3]*v)dΩ 
 b = assemble_vector(l,V0)
 
 u_special_vec = zeros(length(b))
@@ -57,9 +63,9 @@ a_1 = -dot(u_special_vec, M*ϕ[:,2])
 a_2 = -dot(u_special_vec, M*ϕ[:,3]) 
 
 u_final_vec = u_special_vec + a_1*ϕ[:,2] + a_2*ϕ[:,3]
-u_special = FEFunction(Ug,u_special_vec)
+u_fianl = FEFunction(Ug,u_final_vec)
 
-fig, ax, plt = plot(Ω, u_special)
+fig, ax, plt = plot(Ω, u_final)
 Colorbar(fig[1,2], plt)
 fig
 
