@@ -56,14 +56,32 @@ history
 
 u_special = FEFunction(Ug, u_special_vec)
 
-fig, ax, plt = plot(Ω, u_special)
-Colorbar(fig[1, 2], plt)
-fig
-
 a_1 = -c_1 / (2*k^2)
 u_final_vec = u_special_vec+a_1*ϕ[:, 1]
 u_final = FEFunction(Ug, u_final_vec)
 
-fig, ax, plt = plot(Ω, u_final)
-Colorbar(fig[1, 2], plt)
-fig
+# fig = Figure(; size=(820, 440), fontsize=16)
+# ax = Axis(
+#     fig[1, 1];
+#     title="special solution-ellipse case",
+#     xlabel="x",
+#     ylabel="y",
+#     aspect=DataAspect(),
+# )
+# plt = plot!(ax, Ω, u_special; colormap=:RdBu)
+# Colorbar(fig[1, 2], plt)
+# save(joinpath(@__DIR__, "u_special_ellipse.png"), fig; px_per_unit=3)
+
+# fig = Figure(; size=(820, 440), fontsize=16)
+# ax = Axis(
+#     fig[1, 1];
+#     title="LAP solution-ellipse case",
+#     xlabel="x",
+#     ylabel="y",
+#     aspect=DataAspect(),
+# )
+# plt = plot!(ax, Ω, u_final; colormap=:RdBu)
+# Colorbar(fig[1, 2], plt)
+# save(joinpath(@__DIR__, "u_final_ellipse.png"), fig; px_per_unit=3)
+
+# fig
