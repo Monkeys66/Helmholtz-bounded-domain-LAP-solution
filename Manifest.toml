@@ -2,7 +2,7 @@
 
 julia_version = "1.12.6"
 manifest_format = "2.0"
-project_hash = "ab5911f7bf0a2109c4661c35656cc395d3771b26"
+project_hash = "80746ed82239475c4964cf513cff983b25cc0f11"
 
 [[deps.ADTypes]]
 git-tree-sha1 = "ec6be48a85c93d995563b84bff8a86bc98df45ce"
@@ -388,9 +388,9 @@ version = "1.1.0"
 
 [[deps.CommonMark]]
 deps = ["PrecompileTools"]
-git-tree-sha1 = "7e0e715804be2cfdc251d9a4bd10ace7a1b791e5"
+git-tree-sha1 = "7c8fe02c7eb6fe22e89d3990123a2a931ca8fcfb"
 uuid = "a80b9123-70ca-4bc0-993e-6e3bcb318db6"
-version = "1.0.3"
+version = "1.0.4"
 
     [deps.CommonMark.extensions]
     CommonMarkMarkdownASTExt = "MarkdownAST"
@@ -965,6 +965,12 @@ git-tree-sha1 = "2eaa69a7cab70a52b9687c8bf950a5a93ec895ae"
 uuid = "076d061b-32b6-4027-95e0-9a2c6f6d7e74"
 version = "0.2.0"
 
+[[deps.HelmholtzLAP]]
+deps = ["Arpack", "CairoMakie", "Gridap", "GridapGmsh", "GridapMakie", "IterativeSolvers", "JuliaFormatter", "LinearAlgebra", "Printf"]
+path = "."
+uuid = "33fc9971-6f61-4687-a10c-b736b5e5a19d"
+version = "0.1.0"
+
 [[deps.Hwloc_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "XML2_jll", "Xorg_libpciaccess_jll"]
 git-tree-sha1 = "c35847ca5b4997fc8418836354a56c459bcf48d8"
@@ -1173,9 +1179,9 @@ version = "3.2.0+0"
 
 [[deps.JuliaFormatter]]
 deps = ["CommonMark", "Glob", "JuliaSyntax", "PrecompileTools", "TOML", "Test"]
-git-tree-sha1 = "b743480745f234eeee53023c1a30a61165709743"
+git-tree-sha1 = "ecd968c4f2a315a71475888ad7c1350951d0b176"
 uuid = "98e50ef6-434e-11e9-1051-2b60c6c9e899"
-version = "2.12.1"
+version = "2.13.0"
 
 [[deps.JuliaSyntax]]
 git-tree-sha1 = "0d4b3dab95018bcf3925204475693d9f09dc45b8"

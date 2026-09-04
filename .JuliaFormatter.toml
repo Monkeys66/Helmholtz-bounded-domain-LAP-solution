@@ -1,3 +1,15 @@
-style = "blue"
-margin = 92
+style = "default"
 indent = 4
+margin = 100
+
+remove_extra_newlines = false
+separate_kwargs_with_semicolon = true
+whitespace_in_kwargs = false
+trailing_comma = true
+
+always_for_in = true
+for_in_replacement = "in"
+short_to_long_function_def = false
+
+format_docstrings = true
+normalize_line_endings = "unix"

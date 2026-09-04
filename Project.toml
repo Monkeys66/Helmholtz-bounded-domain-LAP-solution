@@ -1,3 +1,7 @@
+name = "HelmholtzLAP"
+uuid = "33fc9971-6f61-4687-a10c-b736b5e5a19d"
+version = "0.1.0"
+
 [deps]
 Arpack = "7d9fca2a-8960-54d3-9f78-7d1dccf2cb97"
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
@@ -6,4 +10,21 @@ GridapGmsh = "3025c34a-b394-11e9-2a55-3fee550c04c8"
 GridapMakie = "41f30b06-6382-4b60-a5f7-79d86b35bf5d"
 IterativeSolvers = "42fd0dbc-a981-5370-80f2-aaf504508153"
 JuliaFormatter = "98e50ef6-434e-11e9-1051-2b60c6c9e899"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
+
+[compat]
+Arpack = "0.5"
+CairoMakie = "0.15"
+Gridap = "0.20"
+GridapGmsh = "0.7"
+GridapMakie = "0.1"
+IterativeSolvers = "0.9"
+JuliaFormatter = "2.13.0"
+julia = "1.12"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
