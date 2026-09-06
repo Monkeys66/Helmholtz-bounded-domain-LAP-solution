@@ -1,6 +1,6 @@
 # Prepare the compatible source and its k-derivative
 # according to the selected source extension.
-function prepare_source_extension(fem, source_loads, Φres, source_mode; atol=1e-10, rtol=1e-8)
+function prepare_source_extension(fem, source_loads, Φres, source_mode; atol=1e-6, rtol=1e-4)
     b = source_loads.b
     b_der = source_loads.b_der
 
@@ -81,8 +81,8 @@ function compute_particular_solution(
     restart=50,
     maxiter=25000,
     reltol=1e-10,
-    atol=1e-10,
-    rtol=1e-8,
+    atol=1e-6,
+    rtol=1e-4,
 )
     source_data =
         prepare_source_extension(fem, source_loads, Φres, source_mode; atol=atol, rtol=rtol)
@@ -144,4 +144,36 @@ function compute_lap_solution(fem, particular, Φres, k)
     constraint_residual = norm(derivative_coupling + 2k * (Φres' * fem.M * u_lap))
 
     return (; u_lap, coefficients, derivative_coupling, constraint_residual)
+end
+
+
+# Compute the particular solution and the final LAP solution.
+function solve_lap(
+    fem,
+    source_loads,
+    Φres,
+    k;
+    source_mode,
+    restart=50,
+    maxiter=25000,
+    reltol=1e-10,
+    atol=1e-6,
+    rtol=1e-4,
+)
+    particular = compute_particular_solution(
+        fem,
+        source_loads,
+        k,
+        Φres;
+        source_mode=source_mode,
+        restart=restart,
+        maxiter=maxiter,
+        reltol=reltol,
+        atol=atol,
+        rtol=rtol,
+    )
+
+    lap = compute_lap_solution(fem, particular, Φres, k)
+
+    return (; particular, lap)
 end

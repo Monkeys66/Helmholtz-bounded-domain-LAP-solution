@@ -19,8 +19,6 @@ export check_source_orthogonality
 export project_load_to_range
 
 include("LAP.jl")
-export prepare_source_extension
-export compute_particular_solution
-export compute_lap_solution
+export solve_lap
 
 end

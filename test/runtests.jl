@@ -13,6 +13,10 @@ using HelmholtzLAP
             :find_resonant_indices,
             :check_source_orthogonality,
             :project_load_to_range,
+            :solve_lap,
+        )
+
+        internal_functions = (
             :prepare_source_extension,
             :compute_particular_solution,
             :compute_lap_solution,
@@ -22,10 +26,15 @@ using HelmholtzLAP
             @test isdefined(HelmholtzLAP, function_name)
             @test function_name in names(HelmholtzLAP)
         end
+
+        for function_name in internal_functions
+            @test isdefined(HelmholtzLAP, function_name)
+            @test !(function_name in names(HelmholtzLAP))
+        end
     end
 
     @testset "fem" begin
-        meshfile = joinpath(@__DIR__, "..", "circle", "geo-circle.msh")
+        meshfile = joinpath(@__DIR__, "test_circle", "geo-circle.msh")
         @test isfile(meshfile)
 
         fem = HelmholtzLAP.assemble_fem(meshfile)
@@ -124,5 +133,18 @@ using HelmholtzLAP
         @test lap.coefficients ≈ [-2.0]
         @test lap.u_lap ≈ [-2.0, 2.0]
         @test lap.constraint_residual ≤ 1e-12
+
+        solution = HelmholtzLAP.solve_lap(
+            fem,
+            orthogonal_loads,
+            Φres,
+            1.0;
+            source_mode=:original,
+            restart=2,
+            maxiter=10,
+            reltol=1e-12,
+        )
+        @test solution.particular.u_special ≈ particular.u_special
+        @test solution.lap.u_lap ≈ lap.u_lap
     end
 end

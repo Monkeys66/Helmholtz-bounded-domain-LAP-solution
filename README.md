@@ -36,9 +36,9 @@ Each `main_*.jl` script follows the same pipeline.
 
 | Directory | Domain | Resonance | Source | Kernel |
 |---|---|---|---|---|
-| `rectangle/` | $[0,\pi]^2$ | $k^2 = 5$ | $F = xy$ | 2-dimensional: $\sin x \sin 2y$, $\sin 2x \sin y$ |
-| `circle/` | unit disk | $k^2 = \lambda_2 \approx 14.69$ | $F = k e^{x^2+y^2}$ | 2-dimensional: the $m=1$ pair |
-| `ellipse/` | $x^2/4 + y^2 \le 1$ | $k^2 = \lambda_1 \approx 3.56$ | $F = k\cos(x+y)$ | 1-dimensional: the ground state |
+| `test/test_rectangle/` | $[0,\pi]^2$ | $k^2 = 5$ | $F = xy$ | 2-dimensional: $\sin x \sin 2y$, $\sin 2x \sin y$ |
+| `test/test_circle/` | unit disk | $k^2 = \lambda_2 \approx 14.69$ | $F = k e^{x^2+y^2}$ | 2-dimensional: the $m=1$ pair |
+| `test/test_ellipse/` | $x^2/4 + y^2 \le 1$ | $k^2 = \lambda_1 \approx 3.56$ | $F = k\cos(x+y)$ | 1-dimensional: the ground state |
 
 The square and the disk are degenerate: the eigenvalue $\lambda = 5$ on $[0,\pi]^2$ arises from $1^2 + 2^2 = 2^2 + 1^2$, and the second Dirichlet eigenvalue of the disk carries the two $m = 1$ modes. Within a degenerate eigenspace `eigs` returns an arbitrary orthonormal basis, so the individual coefficients $a_j$ are basis-dependent; only the combined field $\sum_j a_j \psi_j$ is invariant. The ellipse is non-degenerate, its eigenvalues being given by zeros of Mathieu functions.
 
@@ -47,9 +47,11 @@ The disk case is a useful sanity check: the Gaussian source is radially symmetri
 ## Layout
 
 ```
-circle/     geo_circle.jl     main_circle.jl
-ellipse/    geo_ellipse.jl    main_ellipse.jl
-rectangle/  geo_rectangle.jl  main_rectangle.jl
+test/
+├── runtests.jl
+├── test_circle/     geo_circle.jl     main_circle.jl
+├── test_ellipse/    geo_ellipse.jl    main_ellipse.jl
+└── test_rectangle/  geo_rectangle.jl  main_rectangle.jl
 Project.toml  Manifest.toml
 ```
 
@@ -74,8 +76,8 @@ julia --project=. -e 'using Pkg; Pkg.instantiate()'
 Generate the mesh first, then solve. Taking the ellipse as an example:
 
 ```bash
-julia --project=. ellipse/geo_ellipse.jl -nopopup
-julia --project=. ellipse/main_ellipse.jl
+julia --project=. test/test_ellipse/geo_ellipse.jl -nopopup
+julia --project=. test/test_ellipse/main_ellipse.jl
 ```
 
 The `-nopopup` flag suppresses the interactive Gmsh window; omit it to inspect the mesh in the Gmsh GUI before it is written. The solver scripts are written to be run interactively (VS Code, or `include` from the REPL), where the trailing `fig` renders in the plot pane. The blocks that draw the first three eigenfunctions side by side are present but commented out.
